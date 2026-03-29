@@ -1,0 +1,188 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;700&display=swap');
+@import 'leaflet/dist/leaflet.css';
+
+:root {
+  /* Tema por defecto: Bueno (Verde/Azul) */
+  --bg-color: #0b192c;
+  --accent-color: #00ff88;
+  --panel-bg: rgba(11, 25, 44, 0.6);
+  --text-main: #e2f1f8;
+  --particle-color: rgba(0, 255, 136, 0.4);
+  --glow: 0 0 20px rgba(0, 255, 136, 0.3);
+
+  --font-main: 'Roboto Mono', monospace;
+  --transition-speed: 1.5s;
+}
+
+/* Transiciones suaves al cambiar el CSS Variable desde JS */
+body {
+  transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  position: relative;
+}
+
+/* El Canvas de partículas vivirá destrás de la UI pero sobre el mapa (opcional) o detrás del mapa si el mapa es semitransparente. Lo pondremos sobre el mapa pero ignorando puntero */
+#particles-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 500;
+  mix-blend-mode: screen;
+}
+
+#map {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  /* El mapa tendrá un filtro para fusionarse con el color de fondo */
+  filter: grayscale(80%) contrast(1.2);
+}
+
+/* Panel Glassmorphism inmersivo */
+.dashboard {
+  position: absolute;
+  right: 20px;
+  /* A la derecha en este proyecto */
+  top: 20px;
+  width: 320px;
+  max-height: calc(100vh - 40px);
+  background: var(--panel-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  z-index: 1000;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.02);
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+}
+
+.dashboard-header {
+  margin-bottom: 24px;
+  text-align: right;
+}
+
+.dashboard-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent-color);
+  text-shadow: var(--glow);
+  transition: color var(--transition-speed), text-shadow var(--transition-speed);
+}
+
+.dashboard-header p {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+/* Indicador Grande de ICA */
+.aqi-display {
+  text-align: center;
+  margin: 20px 0;
+  padding: 20px;
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 4px solid var(--accent-color);
+  box-shadow: var(--glow), inset var(--glow);
+  transition: all var(--transition-speed);
+}
+
+.aqi-value {
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.aqi-label {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 5px;
+  opacity: 0.8;
+}
+
+/* Detalles de la Estación */
+.station-details {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.station-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  word-wrap: break-word;
+}
+
+.parameter-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+}
+
+.parameter-value {
+  font-weight: 700;
+  color: var(--accent-color);
+}
+
+/* Custom Marker Leaflet */
+.aqi-marker {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 10px;
+  border: 2px solid white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.aqi-marker:hover {
+  transform: scale(1.2);
+  z-index: 1000 !important;
+}
+
+/* Loader */
+.loader-msg {
+  text-align: center;
+  font-size: 0.9rem;
+  opacity: 0.6;
+  margin: 20px 0;
+}

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Respirar - Calidad del Aire Inmersiva</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+  <!-- Mapa Base -->
+  <div id="map"></div>
+
+  <!-- Capa de partículas generativas controlada por JS -->
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- UI Inmersiva -->
+  <aside class="dashboard">
+    <header class="dashboard-header">
+      <h1>Respirar</h1>
+      <p>Monitor inmersivo de material particulado (PM2.5)</p>
+    </header>
+
+    <div id="status-panel">
+      <div class="loader-msg">Conectando red de sensores...</div>
+    </div>
+
+  </aside>
+
+  <script type="module" src="/main.js"></script>
+</body>
+
+</html>
